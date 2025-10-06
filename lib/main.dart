@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:drive_on_ph/screens/login.dart';
 
 void main() {
   runApp(const DriveOnPH());
@@ -9,9 +10,7 @@ class DriveOnPH extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SplashScreen(),
-    );
+    return MaterialApp(home: SplashScreen());
   }
 }
 
@@ -19,17 +18,14 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container (
+      body: Container(
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Colors.white,
-              Colors.lightBlueAccent,
-            ],
+            colors: [Colors.white, Colors.lightBlueAccent],
           ),
         ),
         child: Column(
@@ -52,7 +48,10 @@ class SplashScreen extends StatelessWidget {
             SizedBox(height: 50),
             ElevatedButton(
               onPressed: () {
-
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
@@ -62,13 +61,12 @@ class SplashScreen extends StatelessWidget {
               ),
               child: Text(
                 'Get Started',
-                style: TextStyle(fontSize: 16,
-                color: Colors.black),
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.black),
               ),
-            ],  
-          ),
+            ),
+          ],
         ),
-      );
-    }
+      ),
+    );
+  }
 }
