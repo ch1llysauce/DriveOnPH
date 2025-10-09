@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:drive_on_ph/screens/main/register.dart';
+import 'package:drive_on_ph/screens/dashboard.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -260,7 +261,11 @@ class LoginButton extends StatelessWidget {
           height: 50,
           child: ElevatedButton(
             onPressed: () {
-              // Handle login action
+              // Navigate to Splash screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Dashboard()),
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blueAccent,
