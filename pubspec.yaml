@@ -62,14 +62,7 @@ flutter:
   uses-material-design: true
   
   assets:
-    - lib/assets/DriveOnPHLogo.png
-    - lib/assets/login.png
-    - lib/assets/googleicon.png
-    - lib/assets/lock.png
-    - lib/assets/username.png
-    - lib/assets/x.png
-    - lib/assets/icon_eye_open.png
-    - lib/assets/icon_eye_close.png
+    - lib/assets/
     #- lib/assets/images/
     #- lib/assets/audio/
   # To add assets to your application, add an assets section, like this:

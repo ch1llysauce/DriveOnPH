@@ -1,21 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:drive_on_ph/screens/main/login.dart';
 
-void main() {
-  runApp(const DriveOnPH());
-}
-
-class DriveOnPH extends StatelessWidget {
-  const DriveOnPH({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: SplashScreen());
-  }
-}
-
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
+class Splash extends StatelessWidget {
+  const Splash({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,19 +21,26 @@ class SplashScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'lib/assets/DriveOnPHLogo.png',
+              'lib/assets/successcreation.png',
               width: 150,
               height: 150,
             ),
             SizedBox(height: 30),
             Text(
-              'Your Journey To Safe Driving',
+              'Success! Your account has been created.',
               style: TextStyle(
                 fontSize: 16,
-                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold,
                 color: Colors.black87,
               ),
             ),
+
+            SizedBox(height: 20),
+            Text(
+              'You can now log in to your account.',
+              style: TextStyle(fontSize: 16, color: Colors.black87),
+            ),
+
             SizedBox(height: 50),
             ElevatedButton(
               onPressed: () {
@@ -56,14 +50,16 @@ class SplashScreen extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                backgroundColor: Colors.blueAccent,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(10),
                 ),
+                elevation: 5,
+                shadowColor: const Color.fromARGB(255, 0, 0, 0).withValues(),
               ),
-              child: Text(
-                'Get Started',
-                style: TextStyle(fontSize: 16, color: Colors.black),
+              child: const Text(
+                'LOG IN',
+                style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),
           ],
