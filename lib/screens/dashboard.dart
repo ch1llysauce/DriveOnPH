@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'roadSignsFeature/roadSigns.dart';
 
+// Dashboard Screen
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
 
@@ -7,7 +9,6 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
       body: Stack(
         children: [
           Align(
@@ -29,31 +30,60 @@ class Dashboard extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    // First row: 2 boxes
+                    // First row
                     Row(
                       children: [
                         Expanded(
-                          child: _buildGridBox("Road Signs and Regulations"),
+                          child: _buildGridButton(
+                            context,
+                            "Road Signs and Regulations",
+                            'lib/assets/road_signs_dashboard.png',
+                            const RoadSignsScreen(),
+                          ),
                         ),
                         const SizedBox(width: 16),
-                        Expanded(child: _buildGridBox("Driving Techniques")),
+                        Expanded(
+                          child: _buildGridButton(
+                            context,
+                            "Driving Techniques",
+                            'lib/assets/driving_techniques_dashboard.png',
+                            const DrivingTechniquesScreen(),
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 16),
 
-                    // Second row: 2 boxes
+                    // Second row
                     Row(
                       children: [
-                        Expanded(child: _buildGridBox("Progress Tracker")),
+                        Expanded(
+                          child: _buildGridButton(
+                            context,
+                            "Progress Tracker",
+                            'lib/assets/progress_tracker_dashboard.png',
+                            const ProgressTrackerScreen(),
+                          ),
+                        ),
                         const SizedBox(width: 16),
-                        Expanded(child: _buildGridBox("License Application")),
+                        Expanded(
+                          child: _buildGridButton(
+                            context,
+                            "License Application",
+                            'lib/assets/license_app_dashboard.png',
+                            const LicenseAppScreen(),
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 16),
 
-                    // Third row: 1 box
-                    _buildFullWidthGridBox(
+                    // Third row (full width)
+                    _buildFullWidthGridButton(
+                      context,
                       "Find Nearest Driving Schools and LTO Branches",
+                      'lib/assets/map_dashboard.png',
+                      const MapScreen(),
                     ),
                   ],
                 ),
@@ -61,7 +91,7 @@ class Dashboard extends StatelessWidget {
             ),
           ),
 
-          // Bottom navigation bar (home, profile, about)
+          // Bottom navigation bar
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -70,8 +100,7 @@ class Dashboard extends StatelessWidget {
               color: Colors.white,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
+                children: [
                   Expanded(
                     child: _NavItem(
                       icon: Icons.car_repair,
@@ -80,17 +109,37 @@ class Dashboard extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: _NavItem(
-                      icon: Icons.person,
-                      label: "Profile",
-                      selected: false,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ProfileScreen(),
+                          ),
+                        );
+                      },
+                      child: const _NavItem(
+                        icon: Icons.person,
+                        label: "Profile",
+                        selected: false,
+                      ),
                     ),
                   ),
                   Expanded(
-                    child: _NavItem(
-                      icon: Icons.info,
-                      label: "About",
-                      selected: false,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const AboutScreen(),
+                          ),
+                        );
+                      },
+                      child: const _NavItem(
+                        icon: Icons.info,
+                        label: "About",
+                        selected: false,
+                      ),
                     ),
                   ),
                 ],
@@ -98,17 +147,30 @@ class Dashboard extends StatelessWidget {
             ),
           ),
 
-          // Header section (top)
+          // Header (no hamburger menu)
           Padding(
             padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Profile button on the right
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Icon(Icons.menu, size: 32, color: Colors.black),
-                    CircleAvatar(radius: 22, backgroundColor: Colors.grey),
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ProfileScreen(),
+                          ),
+                        );
+                      },
+                      child: const CircleAvatar(
+                        radius: 22,
+                        backgroundColor: Colors.grey,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -123,10 +185,7 @@ class Dashboard extends StatelessWidget {
                 const SizedBox(height: 8),
                 const Text(
                   "Good to see you, [User]! Let’s keep learning and driving safe.",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Color.fromARGB(255, 0, 0, 0),
-                  ),
+                  style: TextStyle(fontSize: 16, color: Colors.black),
                 ),
               ],
             ),
@@ -136,72 +195,118 @@ class Dashboard extends StatelessWidget {
     );
   }
 
-  // Reusable white grid box with vertical layout (image above label)
-  Widget _buildGridBox(String label) {
-    return Container(
-      height: 160,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 60,
-            height: 60,
-            color: Colors.grey[300],
-            child: const Icon(Icons.image, color: Colors.white, size: 30),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+  // Grid box
+  Widget _buildGridButton(
+    BuildContext context,
+    String label,
+    String imagePath,
+    Widget screen,
+  ) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
+      },
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        height: 160,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 5,
+              offset: const Offset(0, 3),
             ),
-          ),
-        ],
+          ],
+        ),
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                imagePath,
+                width: 100,
+                height: 80,
+                fit: BoxFit.contain,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildFullWidthGridBox(String label) {
-    return Container(
-      height: 160,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 60,
-            height: 60,
-            color: Colors.grey[300],
-            child: const Icon(Icons.image, color: Colors.white, size: 30),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              label,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Colors.black87,
+  // Full width button
+  Widget _buildFullWidthGridButton(
+    BuildContext context,
+    String label,
+    String imagePath,
+    Widget screen,
+  ) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
+      },
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        height: 160,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                imagePath,
+                width: 100,
+                height: 80,
+                fit: BoxFit.contain,
               ),
             ),
-          ),
-        ],
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-// Custom nav item widget
+// Bottom nav item
 class _NavItem extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -220,7 +325,7 @@ class _NavItem extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: selected ? Color(0xFF6595C4) : Colors.black54,
+          color: selected ? const Color(0xFF6595C4) : Colors.black54,
           size: 28,
         ),
         const SizedBox(height: 4),
@@ -229,10 +334,74 @@ class _NavItem extends StatelessWidget {
           style: TextStyle(
             fontSize: 12,
             fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-            color: selected ? Color(0xFF6595C4) : Colors.black54,
+            color: selected ? const Color(0xFF6595C4) : Colors.black54,
           ),
         ),
       ],
+    );
+  }
+}
+
+// Placeholder screens
+class DrivingTechniquesScreen extends StatelessWidget {
+  const DrivingTechniquesScreen({super.key});
+  @override
+  Widget build(BuildContext context) =>
+      _SimpleScreen(title: 'Driving Techniques');
+}
+
+class ProgressTrackerScreen extends StatelessWidget {
+  const ProgressTrackerScreen({super.key});
+  @override
+  Widget build(BuildContext context) =>
+      _SimpleScreen(title: 'Progress Tracker');
+}
+
+class LicenseAppScreen extends StatelessWidget {
+  const LicenseAppScreen({super.key});
+  @override
+  Widget build(BuildContext context) =>
+      _SimpleScreen(title: 'License Application');
+}
+
+class MapScreen extends StatelessWidget {
+  const MapScreen({super.key});
+  @override
+  Widget build(BuildContext context) =>
+      _SimpleScreen(title: 'Find Nearest Driving Schools and LTO Branches');
+}
+
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+  @override
+  Widget build(BuildContext context) => _SimpleScreen(title: 'Profile');
+}
+
+class AboutScreen extends StatelessWidget {
+  const AboutScreen({super.key});
+  @override
+  Widget build(BuildContext context) => _SimpleScreen(title: 'About');
+}
+
+// Simple placeholder layout
+class _SimpleScreen extends StatelessWidget {
+  final String title;
+  const _SimpleScreen({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+        backgroundColor: const Color(0xFF6595C4),
+      ),
+      body: Center(
+        child: Text(
+          "Welcome to $title!",
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }
